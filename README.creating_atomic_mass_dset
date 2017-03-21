@@ -1,0 +1,75 @@
+########################################################
+#                                                      #
+#                        XDRMAPS                       #
+#                                                      #
+#  TOOL FOR PARSING TRR/XTC TRAJECTORIES AND CREATING  #
+#     GRIDS CONTAINING THE SPATIAL DISTRIBUTION OF     #
+#              SELECTED ATOMIC PROPERTIES              #
+#                                                      #
+########################################################
+
+VERSION: 2017031400
+AUTHOR: Veselin Kolev <vesso.kolev@gmail.com>
+LICENSE: GPLv2
+
+
+SUPPLYING ATOMIC MASSES TO THE TOOLS
+
+The mass of the atoms participating in the processed topology, should
+be stored in the memory allocated by the tool xdrmaps, as an array of
+floating point numbers. That array is initially supplied to xdrmaps
+as HDF5 data set with name "mass" and data type H5T_IEEE_F32LE. On the
+file system the data set is stored in a file, which name (and full
+path) is given to xdrmaps as an invoking (starting) parameter.
+
+An example on how to create the array with the atomic masses and how
+to store in as HDF5 data set, is given by Python script
+create_atomic_mass_dset.py, which is a part of this package source
+code (it is located in the folder python/).
+
+
+AN IMPORTANT NOTE REGARDING THE INDEXING OF THE ARRAY WITH ATOMIC MASSES
+
+IT IS MANDATORY! When preparing the array with the masses, always use
+as a reference GRO or PDB file taken from the trajectory which will be
+processed. That can be done by the GROMACS tool trjconv:
+
+gmx trjconv -f traj.trr -s topol.tpr -o trajout.gro -b 0 -e 0
+
+if the starting time of the simulation is 0.000, change it otherwise.
+
+If the GRO file atom coordinate section contains 6 rows:
+
+    1GMO     O2    1   7.445   8.120   4.792  0.3384  0.5108  0.1254
+    1GMO     H2    1   7.394   8.052   4.835 -1.7992  1.5276 -0.6570
+    1GMO    C20    1   7.389   8.231   4.850 -0.6080  0.0839  0.0727
+    1GMO     H6    1   7.436   8.326   4.817  2.7133 -0.6428  2.2186
+    1GMO     H7    1   7.415   8.222   4.958  1.4281  1.6845 -0.2137
+    1GMO    C19    1   7.231   8.248   4.840 -0.0945 -0.6635 -0.2032
+
+the connection between the atom serial numbers and the indexes in the
+atomic mass array is established as:
+
+atom serial number (row number) : 1 2 3 4 5 6
+index in the mass array         : 0 1 2 3 4 5
+
+and it corresponds to the atomic mass array:
+
+mass[0]=15.9994
+mass[1]=1.00794
+mass[2]=12.0107
+mass[3]=1.00794
+mass[4]=1.00794
+mass[5]=12.0107
+
+where the atomic mass is supplied in g/mol!
+
+The actual atom serial number is the corresponding row number of the
+atom in the coordinate section in the PDB or GRO file! The first row
+in that section is assigned row number 1. Do not use the atom serial
+number stored in the column designated for storing atom serial
+numbers (both GRO and PBD standards define such a column). That
+column in no more read by the modern MD and MC tools. The reason is
+its limited width that prevents it from accommodating integer
+numbers greater then 99999. Nowadays a large amount of simulations
+operate on large systems containing more than 99999 atoms.

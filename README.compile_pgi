@@ -1,0 +1,91 @@
+#################################################
+#                                               #
+#  COMPILING THE XDRMAPS USING PGI COMPILERS    #
+#                                               #
+# Author: Veselin Kolev <vesso.kolev@gmail.com> #
+# Version: 2017031400                           #
+# License: GPLv2                                #
+#                                               #
+#################################################
+
+
+TODO: Create appropriate Makefile and cmake
+
+NOTE: The compiler options given bellow are only an example. Feel free to use
+      the options that best fits your processor architecture and speed of
+      execution.
+
+
+I. Prerequisites
+
+For best results use versions > 11.x of PGI C and FORTRAN compilers! Also you need to have
+Python 2.7 installed.
+
+
+II. Building the xdrmaps tools
+
+II.1. Prepare the build environment and download the xdrmaps code
+
+Create a folder when all the source code will be downloaded and compiled according to the
+instructions given bellow. For all the examples next we assume it is the folder
+
+/home/user/tmp/xdrmaps
+
+Download there the xdrmap code from GitHub:
+
+$ cd /home/user/tmp
+$ git clone https://github.com/kmtu/xdrfort.git
+
+II.2. Download and compile the xdrfile library code
+
+Download the source code of xdrfile library from the "Downloads" page on GROMACS website.
+Then compile it by invoking the PGI C compiler:
+
+$ cd /home/user/tmp/xdrmaps
+$ whet ftp://ftp.gromacs.org/contrib/xdrfile-1.1.4.tar.gz
+$ tar zxvf xdrfile-1.1.4.tar.gz
+$ cd xdrfile-1.1.4/src
+$ pgcc -fast -mcmodel=medium -Mvect -I../include -c xdrfile.c xdrfile_xtc.c xdrfile_trr.c
+
+II.3. Download and compile the xdrfort library code
+
+The code is hosted on GitHub. Downloading it using git is the preferrable method:
+
+$ cd /home/user/tmp/xdrmaps 
+$ git clone https://github.com/kmtu/xdrfort.git
+$ cd xdrfort
+$ pgfortran -fast -mcmodel=medium -Mvect xdr.F90
+
+II.4. Download and compile the HDF5 library code
+
+$ export CC=pgcc
+$ export CXX=pgc++
+$ export CFLAGS='-fast -Mvect'
+$ export CXXFLAGS='-fast -Mvect'
+$ export F77=pgfortran
+$ export FC=pgfortran
+$ export F90=pgfortran
+$ export FFLAGS='-fast -Mvect'
+$ cd /home/user/tmp/xdrmaps
+$ tar jxvf hdf5-1.8.18.tar.bz2
+$ cd hdf5-1.8.18
+$ ./configure --prefix=/storage/vesso/build/xdrmaps/hdf5 --enable-fortran --enable-fortran2003 \
+  --enable-static-exec 
+$ make && make install
+
+II.5. Compile the xdrmaps code
+
+$ cd /home/user/tmp/xdrmaps
+$ hdf5/bin/h5fc -fast -Mvect -mcmodel=medium -c mod_maps.f90 -I./xdrfort xdrfort/xdr.o
+$ hdf5/bin/h5fc -fast -Mvect -mcmodel=medium -o xdrmaps xdrmaps.f90 xdrfort/xdr.o mod_maps.o \
+  xdrfile-1.1.4/src/xdrfile_xtc.o xdrfile-1.1.4/src/xdrfile_trr.o xdrfile-1.1.4/src/xdrfile.o  \
+  -I./xdrfile-1.1.4/include/ -I./xdrfort/
+$ ifort -fast -Mvect -mcmodel=medium -c mod_cmd_line_d.f90
+$ /usr/bin/h5fc -fast -Mvect -mcmodel=medium -c mod_maps_d.f90
+$ /usr/bin/h5fc -fast -Mvect -mcmodel=medium -o xdrmaps_d xdrmaps_d.f90 mod_maps_d.o mod_cmd_line_d.o
+
+
+
+The compited executable for processes the trajectories has name "xdrmaps".
+The compited executable for getting the maps as text files has name "xdrmaps_d".
+
