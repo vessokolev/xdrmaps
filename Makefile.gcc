@@ -1,0 +1,38 @@
+FORTRAN_OBJ = xdr.o
+XDRFILE_OBJ = xdrfile-1.1.4/src/xdrfile.o  xdrfile-1.1.4/src/xdrfile_trr.o  xdrfile-1.1.4/src/xdrfile_xtc.o
+XDRFORT_OBJ = xdrfort/xdr.o
+LEVEL_1_MOD = mod_cmd_line_d.o mod_maps_d.o mod_cmd_line.o mod_maps.o
+XDRMAPS_D_F = xdrmaps_d.o
+XDRMAPS_F   = xdrmaps.o
+XDRMAPS_D   = xdrmaps_d
+XDRMAPS     = xdrmaps
+MAIN        = xdrmaps_d xdrmaps
+INC         = -Ixdrfile-1.1.4//include -Ixdrfort/
+CFLAGS      = -O3
+FFLAGS      = -O3
+
+all: $(XDRFILE_OBJ) $(XDRFORT_OBJ) $(LEVEL_1_MOD) $(XDRMAPS_D_F) $(XDRMAPS_F) $(XDRMAPS_D) $(XDRMAPS)
+
+$(XDRFILE_OBJ): %.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@ $(INC)
+
+$(XDRFORT_OBJ): %.o: %.F90
+	$(FC) $(CFLAGS) -c $< -o $@ $(INC)
+
+$(LEVEL_1_MOD): %.o: %.f90
+	$(FC) $(FFLAGS) -c $< -o $@ $(INC)
+
+$(XDRMAPS_D_F): %.o: %.f90
+	$(FC) $(FFLAGS) -c $< -o $@ $(INC)
+
+$(XDRMAPS_F): %.o: %.f90
+	$(FC) $(FFLAGS) -c $< -o $@ $(INC)
+
+$(XDRMAPS_D):
+	$(FC) $(FFLAGS) -o $(XDRMAPS_D) $(XDRMAPS_D_F) $(XDRFILE_OBJ) $(XDRFORT_OBJ) $(LEVEL_1_MOD)
+
+$(XDRMAPS):
+	$(FC) $(FFLAGS) -o $(XDRMAPS) $(XDRMAPS_F) $(XDRFILE_OBJ) $(XDRFORT_OBJ) $(LEVEL_1_MOD)
+
+clean:
+	rm -f $(XDRFILE_OBJ) $(XDRFORT_OBJ) *.o *.mod $(XDRMAPS_D) $(XDRMAPS)

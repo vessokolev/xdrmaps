@@ -10,14 +10,14 @@
       !#                                                      #
       !########################################################
       !
-      ! Version: 2017031400'
+      ! Version: 2017111700'
       ! Author: Veselin Kolev <vesso.kolev@gmail.com>'
       ! License: GPLv2'
       !
       ! This module parses the command line parameters before running
       ! the computations.
       !
-      use iso_c_binding,only:C_SHORT,C_INT
+      use iso_c_binding,only:C_INT
       !
       implicit none
 
@@ -52,7 +52,7 @@
       !
       ! Local variables:
       !
-      integer(C_SHORT) :: exit_code
+      integer(C_INT) :: exit_code
       character(len=4096) :: int_str
       !
       ! Print the header. That shows the named of the program, the
@@ -163,7 +163,7 @@
       ! This subroutine checks the input parameters received when the
       ! program was invoked.
       !
-      integer(C_SHORT),intent(out) :: exit_code
+      integer(C_INT),intent(out) :: exit_code
       integer(C_INT),dimension(3),intent(out) :: intvl
       character(len=4096),intent(out) :: int_str
       character(len=4096),dimension(4),intent(out) :: files
@@ -175,7 +175,7 @@
       character(len=4096) :: tmp
       character(len=2),dimension(6) :: keys
       integer(C_INT) :: i
-      integer(C_SHORT) :: num_args
+      integer(C_INT) :: num_args
       integer(C_INT) :: iostat_
       logical :: res
       !
@@ -290,7 +290,7 @@
       !
       ! Interface variables:
       !
-      integer(C_SHORT) :: num_args
+      integer(C_INT) :: num_args
       integer(C_INT),intent(in) :: nkeys
       character(len=2),dimension(nkeys),intent(in) :: keys
       logical :: res
@@ -298,7 +298,7 @@
       ! Local variables:
       !
       integer(C_INT) :: i
-      integer(C_SHORT) :: counter
+      integer(C_INT) :: counter
       character(len=4096) :: tmp
       !
       res=.false.
@@ -329,7 +329,7 @@
       !
       ! Interface variables:
       !
-      integer(C_SHORT) :: num_args
+      integer(C_INT) :: num_args
       integer(C_INT),intent(in) :: nkeys
       !
       ! Local variables:
@@ -362,7 +362,7 @@
       !
       ! Local variables:
       !
-      integer(C_SHORT) :: i
+      integer(C_INT) :: i
       !
       res=.false.
       !
@@ -393,7 +393,7 @@
       print *,'#                                                      #'
       print *,'########################################################'
       print *
-      print *,'VERSION: 2017031400'
+      print *,'VERSION: 2017111700'
       print *,'AUTHOR: Veselin Kolev <vesso.kolev@gmail.com>'
       print *,'LICENSE: GPLv2'
       print *
@@ -405,7 +405,7 @@
       print *,'external projects:'
       print *
       print *,'(1) xdrfile-1.1.4 : Copyright (c) 2009-2014, Erik'
-      print *,'Lindahl & David van der Spoel All rights reserved'
+      print *,'Lindahl & David van der Spoel'
       print *
       print *,'(2) xdrfort : XDR Fortran Interface with Wrappers'
       print *,'2014 (c) James W. Barnett <jbarnet4@tulane.edu>'
@@ -427,8 +427,7 @@
       call get_command_argument(0,tmp)
       !
       print *
-      print *,'Invoke the program by supplying the parameters '//&
-              'following this example:'
+      print *,'Invoke the program as:'
       print *
       print *,trim(adjustl(tmp))//' -f trajectory.trr '//&
                                   ' -m mass.h5 '//&

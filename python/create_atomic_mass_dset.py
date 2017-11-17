@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 
 ########################################################
 #                                                      #
@@ -10,7 +10,7 @@
 #                                                      #
 ########################################################
 
-# Version: 2017031400'
+# Version: 2017111700'
 # Author: Veselin Kolev <vesso.kolev@gmail.com>'
 # License: GPLv2'
 #
@@ -72,7 +72,7 @@ atomic_mass_key={\
                   'CL':35.453
                 }
 
-dataset_name='mass' # DO NOT CHANGE THE DATASET NAME!!!
+dataset_name='mass' # DO NOT CHANGE THIS DATASET NAME!!!
 
 
 ###########################################
@@ -107,14 +107,14 @@ def get_masses_from_gro_file(gro_file,atomic_mass_key):
 
     numatoms=int(gro_file_obj.readline())
 
-    atomic_mass=[0.0 for i in xrange(numatoms)]
+    atomic_mass=[0.0 for i in range(numatoms)]
 
-    for i in xrange(numatoms):
+    for i in range(numatoms):
        line=gro_file_obj.readline()
        aname=line[10:15]
        aname=aname.split()
        if aname[0][0] in numbers:
-          print 'FATAL ERROR: At least one atom name starts with number!'
+          print('FATAL ERROR: At least one atom name starts with number!')
           exit()
        else:
           if len(aname[0])==1:
@@ -136,9 +136,9 @@ flag=False
 import sys
 
 if len(sys.argv)<3:
-   print '\nIncorrect number of input paramters!\n'
-   print 'Execute the scipt in the following manner:\n'
-   print sys.argv[0]+' input.gro output.h5\n'
+   print('\nIncorrect number of input paramters!\n')
+   print('Execute the scipt in the following manner:\n')
+   print(sys.argv[0]+' input.gro output.h5\n')
 else:
 
    import h5py  # This Python module can be installed by using
@@ -152,8 +152,8 @@ else:
    # Check if the input file exists:
    if not os.path.isfile(sys.argv[1]):
       flag=False
-      print 'FATAL ERROR: The input file '+sys.argv[1]+\
-            ' does not exist!'
+      print('FATAL ERROR: The input file '+sys.argv[1]+\
+            ' does not exist!')
       flag=False
    else:
       # Check if the output file could be created
@@ -166,11 +166,11 @@ else:
       if flag:
          os.remove(sys.argv[2])
       else:
-         print 'FATAL ERROR: The output file '+sys.argv[2]+\
+         print('FATAL ERROR: The output file '+sys.argv[2]+\
                'cannot be created because either the target '+\
                'folder does not exists or the permissions '+\
                'set on that folder does not allow the '+\
-               'requested file creation!'
+               'requested file creation!')
 
 if flag:
 

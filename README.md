@@ -4,14 +4,15 @@
 
 #### Author: Veselin Kolev <vesso.kolev@gmail.com>
 #### Released under GPLv2 licence.
+#### Version: 2017110700
 
 #### Content:
 
 #### 1. Introduction.
 #### 2. How to download the source code of the project.
-#### 3. Compilation of the source code.
-#### 4. Preparation of the mass and presence arrays as HDF5 data sets.
-#### 5. Collection of the grid statistics as 3D array  HDF5 data set.
+#### 3. Compiling of the source code.
+#### 4. Preparing of the mass and presence arrays as HDF5 data sets.
+#### 5. Collecting of the grid statistics as 3D array  HDF5 data set.
 #### 6. Storing the spatial distribution as a series of 2D maps.
 #### 7. Displaying meta info about the content of the grid data set.
 #### 8. Plotting the 2D maps with gnuplot.
@@ -45,27 +46,35 @@ wget https://github.com/vessokolev/xdrmaps/archive/master.zip
 ```
 
 
-_3. Compilation of the source code._
+_3. Compiling of the source code._
 
-You can compile the source code of xdrmaps by using any modern C and FORTRAN compilers under Linux. Refer to the files:
+To compile the code one need h5fc compiler.
 
+_3.1. Compiling using gcc and hffc based on gfortran._
+
+Most of the Linux distributions provide h5fc as a part of their package collections. You should set
+FC environmental variable to h5fc prior invoking make:
 
 ```
-README.compile_gcc
-README.compile_intel
-README.compile_pgi
-
+$ export CC=gcc
+$ export FC=h5fc
+$ make -f Makefile.gcc
 ```
 
-to obtain the minimum set of compiler options needed to compile fast executable code. Note that the compilation of the source code of xdrmaps project depends on the following external projects:
+_3.2. Compiling using Intel Compilers (icc and h5fc based on Intel ifort)._
 
-xdrfile-1.1.4: ftp://ftp.gromacs.org/contrib/xdrfile-1.1.4.tar.gz
-xdrfort: https://github.com/kmtu/xdrfort.git
+The Intel Compilers distributive does not provide by defaul h5fc compiler. You might create one by getting the
+HDF5 source tarball, unpack it, and compile it by using Intel Compilers. Once having the h5fc in the system, run the
+compilation:
 
-Please, strictly follow the instructions given in the corresponding README files listed above on how to combine the source code and proceed with the compilation. As a result two binary tools will be built - ``xdramaps`` and ``xdramps_d``.
+```
+$ export CC=gcc
+$ export FC=h5fc
+$ make -f Makefile.intel
+```
 
 
-_4. Preparation of the mass and presence arrays as HDF5 data sets._
+_4. Preparing of the mass and presence arrays as HDF5 data sets._
 
 The xdrmaps tool requires to be supplied with the atomic mass of each atom participating in the topology. That particular array have to be stored as HDF5 data set in a separate file. The document ``README.creating_atomic_mass_dset`` explains how to create the atomic mass array and how to save it as HDF5 file set on a file.
 
@@ -74,7 +83,7 @@ Having a presence array makes it possible to mark which of the atoms in the topo
 One need to supply both the mass array and at least the default presence array, to run the grid statistics.
 
 
-_5. Collection of the grid statistics as 3D array  HDF5 data set._
+_5. Collecting of the grid statistics as 3D array  HDF5 data set._
 
 The collection of the grid statistics is performed by running the tool ``xdrmaps``. Running it without input parameters shows the help on the possible command line options. Currently ``xdrmaps`` processes TRR and XTC trajectories. Note that the XTC trajectories can be involved only in the collection of the spatial distribution of the atomic mass. Also note that the results obtained by parsing TRR trajectories are more smooth and reliable then the ones collected by means of XTC trajectories.
 

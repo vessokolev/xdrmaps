@@ -10,14 +10,14 @@
       !#                                                      #
       !########################################################
       !
-      ! Version: 2017031400'
+      ! Version: 2017111700'
       ! Author: Veselin Kolev <vesso.kolev@gmail.com>'
       ! License: GPLv2'
       !
       ! This module parses the command line parameters before running
       ! dumping the maps.
       !
-      use iso_c_binding,only:C_SHORT,C_INT
+      use iso_c_binding,only:C_INT
       !
       implicit none
 
@@ -61,7 +61,7 @@
       character(len=2),dimension(5) :: keys
       integer(C_INT) :: i
       integer(C_INT) :: j
-      integer(C_SHORT) :: num_args
+      integer(C_INT) :: num_args
       integer(C_INT) :: iostat_
       logical :: res
       !
@@ -157,7 +157,7 @@
       !
       ! Interface variables:
       !
-      integer(C_SHORT) :: num_args
+      integer(C_INT) :: num_args
       integer(C_INT),intent(in) :: nkeys
       character(len=2),dimension(nkeys),intent(in) :: keys
       logical :: res
@@ -165,7 +165,7 @@
       ! Local variables:
       !
       integer(C_INT) :: i
-      integer(C_SHORT) :: counter
+      integer(C_INT) :: counter
       character(len=4096) :: tmp
       !
       res=.false.
@@ -196,7 +196,7 @@
       !
       ! Interface variables:
       !
-      integer(C_SHORT) :: num_args
+      integer(C_INT) :: num_args
       integer(C_INT),intent(in) :: nkeys
       !
       ! Local variables:
@@ -229,7 +229,7 @@
       !
       ! Local variables:
       !
-      integer(C_SHORT) :: i
+      integer(C_INT) :: i
       !
       res=.false.
       !
@@ -252,7 +252,7 @@
       print *
       print *,'########################################################'
       print *,'#                                                      #'
-      print *,'#                        XDRMAPS                       #'
+      print *,'#                      XDRMAPS_D                       #'
       print *,'#                                                      #'
       print *,'#  TOOL FOR PARSING TRR/XTC TRAJECTORIES AND CREATING  #'
       print *,'#     GRIDS CONTAINING THE SPATIAL DISTRIBUTION OF     #'
@@ -260,7 +260,7 @@
       print *,'#                                                      #'
       print *,'########################################################'
       print *
-      print *,'VERSION: 2017031400'
+      print *,'VERSION: 2017111700'
       print *,'AUTHOR: Veselin Kolev <vesso.kolev@gmail.com>'
       print *,'LICENSE: GPLv2'
       print *
@@ -285,8 +285,7 @@
       call get_command_argument(0,tmp)
       !
       print *
-      print *,'Invoke the program by supplying the parameters '//&
-              'following this example:'
+      print *,'Invoke the program as:'
       print *
       print *,trim(adjustl(tmp))//' -g grid.h5 '//&
                                   ' -d 3 '//&

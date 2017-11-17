@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 
 ########################################################
 #                                                      #
@@ -10,7 +10,7 @@
 #                                                      #
 ########################################################
 
-# Version: 2017031400'
+# Version: 2017111700'
 # Author: Veselin Kolev <vesso.kolev@gmail.com>'
 # License: GPLv2'
 #
@@ -76,7 +76,7 @@ def select_all_atoms(gro_file):
              # residue with name SOL will be presented in atom_presence
              # array (the elements representing them in the presence
              # array will be set 1).
-             atom_presence=[1 for i in xrange(numatoms)]
+             atom_presence=[1 for i in range(numatoms)]
              # Exit the loop here:
              break
           else:
@@ -93,9 +93,9 @@ import sys
 
 if len(sys.argv)<3:
 
-   print '\nIncorrect number of input paramters!\n'
-   print 'Execute the scipt in the following manner:\n'
-   print sys.argv[0]+' input.gro output.h5\n'
+   print('\nIncorrect number of input paramters!\n')
+   print('Execute the scipt in the following manner:\n')
+   print(sys.argv[0]+' input.gro output.h5\n')
 
 else:
 
@@ -110,8 +110,8 @@ else:
    # Check if the input file exists:
    if not os.path.isfile(sys.argv[1]):
       flag=False
-      print 'FATAL ERROR: The input file '+sys.argv[1]+\
-            ' does not exist!'
+      print('FATAL ERROR: The input file '+sys.argv[1]+\
+            ' does not exist!')
       flag=False
    else:
       # Check if the output file could be created
@@ -124,11 +124,11 @@ else:
       if flag:
          os.remove(sys.argv[2])
       else:
-         print 'FATAL ERROR: The output file '+sys.argv[2]+\
+         print('FATAL ERROR: The output file '+sys.argv[2]+\
                'cannot be created because either the target '+\
                'folder does not exists or the permissions '+\
                'set on that folder does not allow the '+\
-               'requested file creation!'
+               'requested file creation!')
 
 if flag:
 
