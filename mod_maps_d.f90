@@ -1080,7 +1080,7 @@ file_name=trim(adjustl(output_folder))//'/'//&
 
 write(tmp,fmt='(I10)') slice_s(2)
 
-fmt_='('//trim(adjustl(tmp))//'E14.7)'
+fmt_='('//trim(adjustl(tmp))//'(E14.7,1x))'
 
 open(23432,file=trim(adjustl(file_name)),status='unknown')
 
